@@ -178,8 +178,8 @@ const logoutUser = asyncHandler( async(req,res) => {
     await User.findByIdAndUpdate(
         req.user._id,
         {
-            $set:{
-                 refreshToken: undefined
+            $unset:{
+                 refreshToken: 1 // this remove the field from document
             }
         },
         {
@@ -437,7 +437,7 @@ const getUserChannelProfile = asyncHandler(async(req,res) => {
         throw new ApiError(401, "Channel does not exist")
     }
 
-    return req
+    return res
     .status(200)
     .json(
         new ApiResponse(200,
